@@ -85,6 +85,8 @@
     <Content Include="accountHolder.html" />
     <Content Include="Global.asax" />
     <Content Include="index.html" />
+    <Content Include="partials\state1.html" />
+    <Content Include="partials\state2.html" />
     <Content Include="Scripts\angular-ui-router.js" />
     <Content Include="Scripts\angular.min.js" />
     <Content Include="styles\bootstrap\css\bootstrap-theme.css" />

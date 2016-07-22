@@ -6,13 +6,17 @@
     <link rel="stylesheet" type="text/css" media="screen" href="styles/bootstrap/css/bootstrap.css">
 </head>
 <body ng-controller="demo">
-    <h1>Hello World!</h1>
+    <h1>Welcome to the Young Family Bank</h1>
 
-    <input type="text" ng-model="name" />
+    <div ui-view></div>
+    <a ui-sref="state1">Show state 1</a>
+    <a ui-sref="state2">Show state 2</a>
+
+    <input type="text" ng-model="name" placeholder="filter" />
     {{name}}
 
     <div class="container">
-        <div class="row" ng-repeat="person in people">
+        <div class="row" ng-repeat="person in people| filter:name">
             <div class="col-md-3">
                 <img ng-src={{person.photoUrl}} width="100" height="100" />
             </div>
@@ -32,9 +36,24 @@
         </li>
     </ul>
 
+
     <script src="Scripts/angular.min.js"></script>
+    <script src="Scripts/angular-ui-router.js"></script>
     <script type="text/javascript">
-        var app = angular.module("app", []);
+        var app = angular.module("app", ["ui.router"]);
+        app.config(function ($stateProvider, $urlRouterProvider) {
+            $urlRouterProvider.otherwise("/state1");
+
+            $stateProvider
+                .state('state1', {
+                    url: "/state1",
+                    templateUrl: "/partials/state1.html"
+                })
+                .state('state2', {
+                    url: "/state2",
+                    templateUrl: "/partials/state2.html"
+                })
+        });
         app.controller("demo", function ($scope) {
             $scope.people = [
                 { name: "Andre Young", photoUrl:"images/andre.jpg", account: { balance: 5.45 } },
