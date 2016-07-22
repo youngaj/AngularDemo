@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+<html  ng-app="app">
+<head>
+    <title></title>
+	<meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" media="screen" href="styles/bootstrap/css/bootstrap.css">
+</head>
+<body ng-controller="demo">
+    <h1>Hello World!</h1>
+
+    <input type="text" ng-model="name" />
+    {{name}}
+
+    <div class="container">
+        <div class="row" ng-repeat="person in people">
+            <div class="col-md-3">
+                <img ng-src={{person.photoUrl}} width="100" height="100" />
+            </div>
+            <div class="col-md-9">
+                <h3>{{person.name | uppercase}} <span class="alert alert-danger" ng-show="person.account.balance<0">- Account overdrawn</span></h3>
+                {{person.account.balance | currency}}
+                <br />
+                <button ng-click="debitAccount(person)" class="btn btn-danger" ng-if="person.account.balance>0">Debit Account</button>
+                <button ng-click="creditAccount(person)" class="btn btn-success">Credit Account</button>
+            </div>
+            <account-holder data-person="person" data-credit="creditAccount(person)" data-debit="debitAccount(person)" ></account-holder>
+        </div>
+    </div>
+    <ul>
+        <li ng-repeat="person in people">
+            {{person|json}}
+        </li>
+    </ul>
+
+    <script src="Scripts/angular.min.js"></script>
+    <script type="text/javascript">
+        var app = angular.module("app", []);
+        app.controller("demo", function ($scope) {
+            $scope.people = [
+                { name: "Andre Young", photoUrl:"images/andre.jpg", account: { balance: 5.45 } },
+                { name: "Annuetta Young", photoUrl: "images/annuetta.jpg", account: { balance: 100.45 } },
+                { name: "India Young", photoUrl: "images/india.png", account: { balance: 200.88 } },
+                { name: "Alyssa Young", photoUrl: "images/lissy.jpg", account: { balance: 230.45 } },
+            ];
+
+            $scope.creditAccount = creditAccount;
+            $scope.debitAccount = debitAccount;
+
+            function creditAccount(person) {
+                adjustAccount(person, 20);
+            }
+
+            function debitAccount(person) {
+                adjustAccount(person, -30);
+            }
+
+            function adjustAccount(person, amount) {
+                person.account.balance = person.account.balance + amount;
+            }
+
+        });
+
+        app.directive("accountHolder", function () {
+            var directive = {
+                restrict: 'AE',
+                bindToController: {
+                    person: '=',
+                    debit: '&',
+                    credit: '&'
+                },
+                scope: {},
+                controller: function () { },
+                controllerAs: "vm",
+                templateUrl: 'accountHolder.html'
+            };
+            return directive;
+        });
+    </script>
+</body>
+</html>

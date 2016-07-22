@@ -1,0 +1,11 @@
+﻿<hr />
+<div class="col-md-3">
+    <img ng-src={{vm.person.photoUrl}} width="100" height="100" />
+</div>
+<div class="col-md-9">
+    <h3>Directive - {{vm.person.name | lowercase}} <span class="alert alert-danger" ng-show="vm.person.account.balance<0">- Account overdrawn</span></h3>
+    {{vm.person.account.balance | currency}}
+    <br />
+    <button ng-click="vm.debit(person)" class="btn btn-danger" ng-if="vm.person.account.balance>0">Debit Account</button>
+    <button ng-click="vm.credit(person)" class="btn btn-success">Credit Account</button>
+</div>
